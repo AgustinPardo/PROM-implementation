@@ -1,0 +1,21 @@
+#Archivos
+Modelo COBRA mtb: iEK1011_inVivo_media.json (Kavvas et al. 2018)
+Modelo COBRA mtb: iEK1008.mat (BIGG)
+Red regulatoria: sanz_tb_net.txt (Sanz et al. 2011)
+
+#Matlab
+load('mtbpromdata.mat')
+[f_ko,v_ko] = PROM(model,expression,expressionid,regulator,targets)
+
+#Inicio COBRA
+initCobraToolbox
+
+#Modelo leer el .mat
+load('iEK1008.mat')
+
+#red Sanz
+Sacar autoregulacion?
+Si
+Separo FT, de targets en archivos diferentes y saco autoregulacion.
+#Leo la red de Sanzen matlab
+

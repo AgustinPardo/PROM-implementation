@@ -1,0 +1,28 @@
+clear
+
+load('/home/agustin/cobratoolbox/PROM_Chandrasekaran/mtbpromdata.mat')
+
+fid = fopen('targets.txt','r');
+data = textscan(fid,'%s', 'Delimiter', '\n');
+fclose(fid);
+z_targets=data{1}
+
+fid = fopen('TF.txt','r');
+data = textscan(fid,'%s', 'Delimiter', '\n');
+fclose(fid);
+z_regulator=data{1}
+
+z_litevidence = importfile_numeric('litevidence.txt','r')
+z_prob_prior = importfile_numeric('prob_prior.txt','r')
+
+clear ans fid data
+
+load('iEK1008.mat')
+%Lo saque de PROM paper
+z_expression = load('expression.mat')
+%Lo saque de PROM paper
+z_expressionid = load('expressionid.mat')
+
+addpath('/home/agustin/cobratoolbox/PROM_Chandrasekaran')
+
+%PROM(iEK1008,expression,expressionid,regulator,targets,litevidence,prob_prior)
