@@ -17,5 +17,10 @@ load('iEK1008.mat')
 Sacar autoregulacion?
 Si
 Separo FT, de targets en archivos diferentes y saco autoregulacion.
+
+Creo un .sh para separar los TF de targets.
+Ademas los filtro segun corresponda respecto a la data del modelo, red regulatoria y expresion.
+
+
 #Leo la red de Sanzen matlab
 
