@@ -5,7 +5,7 @@ load('/home/agustin/cobratoolbox/PROM_Chandrasekaran/mtbpromdata.mat');
 fid = fopen('targets_filter.txt','r');
 data = textscan(fid,'%s', 'Delimiter', '\n');
 fclose(fid);
-z_targets = data{1}
+z_targets = data{1};
 
 fid = fopen('regulator_filter.txt','r');
 data = textscan(fid,'%s', 'Delimiter', '\n');
@@ -32,11 +32,10 @@ clear rev;
 addpath('/home/agustin/cobratoolbox/PROM_Chandrasekaran');
 
 %PROM con datos del paper
-%PROM(model, expression, expressionid, regulator, targets, litevidence,
-%prob_prior);
+[f,v,status1,lostxns] = PROM(model, expression, expressionid, regulator, targets, litevidence,prob_prior);
 
 %PROM con nuevos datos
-[f,v,status1,lostxns] = PROM(iEK1008, expression, expressionid, z_regulator, z_targets, z_litevidence, z_prob_prior);
+%[f,v,status1,lostxns] = PROM(iEK1008, expression, expressionid, z_regulator, z_targets, z_litevidence, z_prob_prior);
 
 
 %fid = fopen('expressionid.txt','w');
