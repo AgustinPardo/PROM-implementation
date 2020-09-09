@@ -14,10 +14,6 @@ target_lines=clean(target.readlines())
 FT_set=set(FT_lines)
 target_set=set(target_lines)
 
-print("#FT:"+  str(len(FT_set)))
-print("#target:"+  str(len(target_set)))
-print("#FT & target:"+ str(len(FT_set & target_set)))
-
 DG = nx.DiGraph()
 
 
@@ -53,10 +49,21 @@ ax1.set_title("Out Degree Histogram")
 ax1.set(xlabel="Degree",ylabel="count")
 ax1.set_xticks(np.arange(0, max(degree_hist(outd)[0]), step=5))
 
+
+
+ax1.text(75,10 , "#FT: "+str(len(FT_set))+"\n"+
+                 "#target: "+str(len(target_set))+"\n"+
+                 "#FT & target: "+str(len(FT_set & target_set)),
+        bbox=dict(boxstyle = "square",
+                  facecolor = "white"))
+
 ax2.bar(degree_hist(ind)[0],degree_hist(ind)[1], width=0.80, color="b")
 ax2.set_title("In Degree Histogram")
 ax2.set(xlabel="Degree",ylabel="count")
 ax2.set_xticks(np.arange(0, max(degree_hist(ind)[0]), step=5))
 
 fig.tight_layout()
+
+# Create the legend
+
 plt.show()
