@@ -7,7 +7,7 @@
 | Github  | [AgustinPardo](https://github.com/AgustinPardo/)                     |
 | Email   | <agustinmpardo@gmail.com>     
 
-<img src="https://docs.google.com/drawings/d/1Pxuw6N9dvKwDFJvrLfJVf-O-IOJK0-pEp3l9fdzgqK8/export/png"/>
+<img src="https://docs.google.com/drawings/d/1Pxuw6N9dvKwDFJvrLfJVf-O-IOJK0-pEp3l9fdzgqK8/export/png" width="1800" height="1000">
 
 
 ## TRN degrees
