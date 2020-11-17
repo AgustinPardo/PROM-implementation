@@ -22,5 +22,4 @@ rxns_flux.json
 
 iEK1011_m7H10_media.json
 
-
-![escher_map](https://github.com/AgustinPardo/PROM-implementation/blob/master/metabolic_map/c_core_iEk1008m7H10_flux.svg)
+<img src="https://github.com/AgustinPardo/PROM-implementation/blob/master/metabolic_map/c_core_iEk1008m7H10_flux.svg" width="800">
