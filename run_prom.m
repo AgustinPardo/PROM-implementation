@@ -24,7 +24,7 @@ z_prob_prior = importfile_numeric('prob_prior_filter.txt','r');
 clear ans fid data;
 
 % Cargo el Modelo de BIGG, Soluciono problemade rules y rev.
-load('/home/agustin/FBA_Tesis/PROM_trabajo/convertion/iEK1011_m7H10_media.mat')
+load('/home/agustin/FBA_Tesis/PROM_trabajo/convertion/iEK1011_griffinEssen_media.mat')
 rev=iEK1011.rev;
 clear ans iEK1011; 
 iEK1011=readCbModel('/home/agustin/FBA_Tesis/PROM_trabajo/convertion/iEK1011_griffinEssen_media.mat'); 
@@ -37,17 +37,22 @@ checkObjective(iEK1011)
 
 FBAsolution = optimizeCbModel(iEK1011,'max')
 %% Cargo otro modelo, veo su reaccion de biomasa y la guardo
-    %load('/home/agustin/FBA_Tesis/PROM_trabajo/convertion/iEK1011_m7H10_media.mat');
-    %biomass = checkObjective(iEK1011);
-    %biomass_rxn_c = char(printRxnFormula(iEK1011,biomass));
-
+%     load('/home/agustin/FBA_Tesis/PROM_trabajo/convertion/iEK1011_m7H10_media.mat');
+%     biomass = checkObjective(iEK1008);
+%     biomass_rxn_c = char(printRxnFormula(iEK1008,biomass));
+% 
 % Cambio la biomasa
-    %iEK1008 = addReaction(iEK1008, 'biomass_rxn_c','reactionFormula', biomass_rxn_c);
-    %iEK1008 = changeObjective(iEK1008,'biomass_rxn_c');
+%     iEK1011 = addReaction(iEK1011, 'biomass_rxn_c','reactionFormula', biomass_rxn_c);
+%     iEK1011 = changeObjective(iEK1011,'biomass_rxn_c');
 
 % Chequeo el cambio de Biomasa
     %checkObjective(iEK1008)
 %%
+
+%% Veo el medio. Para eso tengo que ver las reacciones de exchange EX
+%printConstraints(model,-500, +500)
+%%
+
 
 addpath('/home/agustin/cobratoolbox/PROM_Chandrasekaran');
 
