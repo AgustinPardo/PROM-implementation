@@ -24,10 +24,10 @@ z_prob_prior = importfile_numeric('prob_prior_filter.txt','r');
 clear ans fid data;
 
 % Cargo el Modelo de BIGG, Soluciono problemade rules y rev.
-load('/home/agustin/FBA_Tesis/PROM_trabajo/convertion/iEK1011_griffinEssen_media.mat')
+load('/home/agustin/FBA_Tesis/PROM_trabajo/convertion/iEK1011_deJesusEssen_media.mat')
 rev=iEK1011.rev;
 clear ans iEK1011; 
-iEK1011=readCbModel('/home/agustin/FBA_Tesis/PROM_trabajo/convertion/iEK1011_griffinEssen_media.mat'); 
+iEK1011=readCbModel('/home/agustin/FBA_Tesis/PROM_trabajo/convertion/iEK1011_deJesusEssen_media.mat'); 
 iEK1011.rev=rev; 
 clear rev;
 
@@ -78,6 +78,7 @@ addpath('/home/agustin/cobratoolbox/PROM_Chandrasekaran');
 %dlmwrite('f.txt', f, 'delimiter','\t','newline','pc','precision',13);
 
 %% Analisis de resultados
+% diff
 diff_f= (f/FBAsolution.f)*100;
 u_z_regulator=unique(z_regulator);
 T = array2table(diff_f,'VariableNames',u_z_regulator);
@@ -85,4 +86,8 @@ T = array2table(diff_f,'VariableNames',u_z_regulator);
 YourArray = table2array(T);
 Tt = array2table(YourArray.');
 Tt.Properties.RowNames = T.Properties.VariableNames;
-writetable(Tt,"diff_f_Griffin.txt",'WriteRowNames',true);
+%writetable(Tt,"diff_f_DeJesus.txt",'WriteRowNames',true);
+
+% f solo
+t=table(u_z_regulator,transpose(f));
+%writetable(t,"f_DeJesus.txt",'WriteRowNames',true);
