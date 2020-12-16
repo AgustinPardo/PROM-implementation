@@ -11,11 +11,17 @@
 # BiocManager::install("pheatmap")
 # BiocManager::install("org.Hs.eg.db")
 
+#Recursos
+#https://combine-australia.github.io/RNAseq-R/06-rnaseq-day1.html#Filtering_lowly_expressed_genes
+#https://www.stat.purdue.edu/bigtap/online/docs/Introduction_to_Microarray_Analysis_GSE15947.html
+#https://sbc.shef.ac.uk/geo_tutorial/tutorial.nb.html
+#https://rpubs.com/sharbie/462299
+
 # exp_PROM_Original.txt
 expTable_PROM_original <- read.table("exp_PROM_Original.txt", header=TRUE, row.names=1, sep=",")
 
 # Boxplot
-boxplot(expTable_PROM_original[1:100])
+boxplot(expTable_PROM_original)
 boxplot(expTable_PROM_original[100:200])
 
 # Media, desvio
@@ -32,5 +38,7 @@ plot(means, type = "l")
 plot(std, type = "l")
 
  # Hetmap
-df <- scale(expTable_PROM_original[1:30])
+# https://www.datanovia.com/en/lessons/heatmap-in-r-static-and-interactive-visualization/
+df = t(expTable_PROM_original)
+df <- scale(df)
 heatmap(df, scale = "none")
