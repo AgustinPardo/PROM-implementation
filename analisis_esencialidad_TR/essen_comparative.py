@@ -100,8 +100,8 @@ grafical_list=[]
 #[round(x * 0.01, 1) for x in range(1, 100)]
 intervals=[round(x * 0.01, 2) for x in range(1, 100,1)]
 for x in intervals:
-    #grafical_list.append(confusion(griffin_fko_TF_file, griffin_pvalue, esse_threshold=0.1, growth_threshold=x*0.0584))
-    grafical_list.append(confusion( loerger_fko_TF_file, loerger_finalCall, esse_threshold=0.1, growth_threshold=x*0.0485, type_essen='loerger'))
+    grafical_list.append(confusion(griffin_fko_TF_file, griffin_pvalue, esse_threshold=0.1, growth_threshold=x*0.0584))
+    #grafical_list.append(confusion( loerger_fko_TF_file, loerger_finalCall, esse_threshold=0.1, growth_threshold=x*0.0485, type_essen='loerger'))
 
 accuracy_data=[]
 error_rate_data=[]
@@ -155,4 +155,10 @@ plt.plot(0.2, paper_iEK1011[3], "bo")
 plt.plot(0.2, paper_iEK1011[5], "yo")
 plt.plot(0.2, paper_iEK1011[6], "ko")
 
+plt.show()
+
+#ROC curve
+plt.plot(
+False_positive_rate_data, sensitivity_data, 
+)
 plt.show()

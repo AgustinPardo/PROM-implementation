@@ -77,6 +77,14 @@ addpath('/home/agustin/cobratoolbox/PROM_Chandrasekaran');
 
 %dlmwrite('f.txt', f, 'delimiter','\t','newline','pc','precision',13);
 
+% Para guardar una matriz
+% dlmwrite('file.txt',expression)
+
+%Export matriz como tabla
+% exp_table = array2table(expression(1:4295, :));
+% exp_table.Properties.RowNames=exp_id;
+% writetable(exp_table,"exp_PROM_Original.txt",'WriteRowNames',true);
+
 %% Analisis de resultados
 % diff
 diff_f= (f/FBAsolution.f)*100;
