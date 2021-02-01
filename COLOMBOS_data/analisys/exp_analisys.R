@@ -20,12 +20,22 @@
 # exp_PROM_Original.txt
 expTable_PROM_original <- read.table("exp_PROM_Original.txt", header=TRUE, row.names=1, sep=",")
 
+# exp colombos GSE1642
+colombos_GSM27855 <- read.table("~/FBA_Tesis/PROM_trabajo/COLOMBOS_data/analisys/colombos_GSM27855_noNaN.txt",  dec = "." ,skip=7,  header=FALSE, fill=TRUE)
+colombos_GSM27855$V3 <- NULL              
+colombos_GSM27855$V2 <- NULL
+samp2 <- colombos_GSM27855[,1]
+rownames(colombos_GSM27855) = make.names(samp2, unique=TRUE)
+colombos_GSM27855$V1 <- NULL
+#colombos_GSM27855[is.na(colombos_GSM27855)] <- 0
+
+
 # Boxplot
 boxplot(expTable_PROM_original)
 boxplot(expTable_PROM_original[100:200])
 
 # Media, desvio
-means=colMeans(expTable_PROM_original)
+means=colMeans(colombos_GSM27855)
 std=apply(expTable_PROM_original, 2,  sd)
 names=names(means)
 c=1:length((names))
@@ -42,3 +52,5 @@ plot(std, type = "l")
 df = t(expTable_PROM_original)
 df <- scale(df)
 heatmap(df, scale = "none")
+
+

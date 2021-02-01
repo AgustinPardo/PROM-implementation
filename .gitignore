@@ -2,4 +2,7 @@
 COLOMBOS_data/colombos_mtube_exprdata_20151029.txt
 COLOMBOS_data/colombos_mtube_refannot_20151029.txt
 COLOMBOS_data/colombos_mtube_testannot_20151029.txt
-COLOMBOS_data/GEO_analisys/exp_PROM_Original.txt
+COLOMBOS_data/analisys/exp_PROM_Original.txt
+COLOMBOS_data/analisys/colombos_GSM27855_noNaN.txt
+COLOMBOS_data/analisys/colombos_GSM27855.txt
+
