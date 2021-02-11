@@ -12,18 +12,46 @@ fid = fopen('targets_filter.txt','r');
 data = textscan(fid,'%s', 'Delimiter', '\n');
 fclose(fid);
 z_targets = data{1};
+clearvars fid data;
 
 fid = fopen('regulator_filter.txt','r');
 data = textscan(fid,'%s', 'Delimiter', '\n');
 fclose(fid);
 z_regulator = data{1};
+clearvars fid data;
 
-z_litevidence = importfile_numeric('litevidence_filter.txt','r');
-z_prob_prior = importfile_numeric('prob_prior_filter.txt','r');
+% Cargo z_litevidence
+filename = '/home/agustin/FBA_Tesis/PROM_trabajo/litevidence_filter.txt';
+delimiter = {''};
+formatSpec = '%f%[^\n\r]';
+fileID = fopen(filename,'r');
+dataArray = textscan(fileID, formatSpec, 'Delimiter', delimiter, 'TextType', 'string',  'ReturnOnError', false);
+fclose(fileID);
+z_litevidence = [dataArray{1:end-1}];
+clearvars filename delimiter formatSpec fileID dataArray ans;
 
+% Cargo z_prob_prior
+filename = '/home/agustin/FBA_Tesis/PROM_trabajo/prob_prior_filter.txt';
+delimiter = {''};
+formatSpec = '%f%[^\n\r]';
+fileID = fopen(filename,'r');
+dataArray = textscan(fileID, formatSpec, 'Delimiter', delimiter, 'TextType', 'string',  'ReturnOnError', false);
+fclose(fileID);
+z_prob_prior = [dataArray{1:end-1}];
+clearvars filename delimiter formatSpec fileID dataArray ans data;
+
+% Nueva matriz de expresion
+expression_colombos_1021=dlmread('/home/agustin/FBA_Tesis/PROM_trabajo/COLOMBOS_data/expression_colombos_1021.txt')
+% Nuevo expressionid
+fid = fopen('/home/agustin/FBA_Tesis/PROM_trabajo/COLOMBOS_data/expressionid_colombos_1021.txt','r');
+data = textscan(fid,'%s', 'Delimiter', '\n');
+fclose(fid);
+expressionid_colombos_1021 = data{1};
 clear ans fid data;
 
 % Cargo el Modelo de BIGG, Soluciono problemade rules y rev.
+% Al cargarlo con load, se soluciona rules y rev se cargan. Si lo cargo con
+% readCbodel no se soluciona
 load('/home/agustin/FBA_Tesis/PROM_trabajo/convertion/iEK1011_deJesusEssen_media.mat')
 rev=iEK1011.rev;
 clear ans iEK1011; 
@@ -65,7 +93,7 @@ addpath('/home/agustin/cobratoolbox/PROM_Chandrasekaran');
 % Corro PROM version 2
 %function [f,f_ko,v,v_ko,status1,lostxns,probtfgene] =  promv2(model,expression,expressionid,regulator,targets,litevidence,prob_prior,subsets,v11,v12,KAPPA,DATATHRESHVAL,probtfgene,sizeflag)
 [v11, v12] = fastFVA(iEK1011);
-[f,f_ko,v,v_ko,status1,lostxns,probtfgene] =  promv2(iEK1011,expression,expressionid,z_regulator,z_targets,z_litevidence,z_prob_prior,[],v11,v12,[],[],[],1)
+[f,f_ko,v,v_ko,status1,lostxns,probtfgene] =  promv2(iEK1011,expression_colombos_1021,expressionid_colombos_1021,z_regulator,z_targets,z_litevidence,z_prob_prior,[],v11,v12,[],[],[],1)
 
 
 %% Exporto variables

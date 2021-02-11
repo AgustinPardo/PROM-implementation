@@ -49,29 +49,28 @@ boxplot(exprs(gse_GLP1343),outline=FALSE)
 
 
 #######
-# Manual
+
 # exp_PROM_Original.txt
 expTable_PROM_original <- read.table("exp_PROM_Original.txt", header=TRUE, row.names=1, sep=",")
 
-# exp colombos GSE1642
+# Sets de colombos
 colombos_GSE1642 <- read.table("/home/agustin/FBA_Tesis/PROM_trabajo/COLOMBOS_data/analisys/colombos_GSE1642.txt",  row.names=1, dec = "." ,skip=7,  header=FALSE, fill=TRUE)
 colombos_GSE16811 <- read.table("/home/agustin/FBA_Tesis/PROM_trabajo/COLOMBOS_data/analisys/colombos_GSE16811.txt",  row.names=1, dec = "." ,skip=7,  header=FALSE, fill=TRUE)
 colombos_9776 <- read.table("/home/agustin/FBA_Tesis/PROM_trabajo/COLOMBOS_data/colombos_9776.txt",  row.names=1, dec = "." ,skip=7,  header=FALSE, fill=TRUE)
 colombos_16811_40846_9776_35362_14840 <- read.table("/home/agustin/FBA_Tesis/PROM_trabajo/COLOMBOS_data/colombos_16811_40846_9776_35362_14840.txt",  row.names=1, dec = "." ,skip=7,  header=FALSE, fill=TRUE)
 
+# Las plataformas que usa COLOMBOS
 #colombos_GPL <- read.table("/home/agustin/FBA_Tesis/PROM_trabajo/COLOMBOS_data/colombos_mtube_exprdata_20151029.txt",  dec = "." , skip=5,  header=FALSE, fill=TRUE)
 colombos_mtube_GPL <- read.delim("~/FBA_Tesis/PROM_trabajo/COLOMBOS_data/colombos_mtube_GPL.txt", header=FALSE)
 colombos_mtube_GPL <- as.matrix (colombos_mtube_GPL)
 #colombos_GPL <- colombos_GPL[1,]
 batch=colombos_mtube_GPL
 batch=as.vector(batch)
-a<-c(1,2,3)
-colombos_all <- read.table("/home/agustin/FBA_Tesis/PROM_trabajo/COLOMBOS_data/colombos_all.txt", row.names=1, dec = "." ,skip=7,  header=FALSE, fill=TRUE)
+
+# Todo el data set de colombos
+colombos_all <- read.table("/home/agustin/FBA_Tesis/PROM_trabajo/COLOMBOS_data/colombos_GPL_sets/colombos_all.txt", row.names=1, dec = "." ,skip=7,  header=FALSE, fill=TRUE)
 select <- as.matrix (colombos_all)
 boxplot(select,outline=FALSE)
-
-#select[is.na(select)] <- 0
-#select <- as.matrix (colombos_9776)
 
 # limma 
 library("limma")
@@ -106,10 +105,17 @@ boxplot(select_quantile,outline=FALSE)
 # dim(select_quantile)
 
 library("sva")
+# Saco los NA, pongo 0
 select_quantile[is.na(select_quantile)] = 0
+# Aplico ComBat
 data_combat=ComBat(dat=select_quantile, batch=batch, mod=NULL, par.prior = TRUE, prior.plots = FALSE)
 boxplot(data_combat,outline=FALSE)
 
+# Set final. Exporto la matriz
+write.table(data_combat, file="expression_colombos_1021.txt", row.names=FALSE, col.names=FALSE, sep = ",")
+# Exporto expression id
+expressionid=rownames(data_combat)
+write.table(expressionid, file="expressionid_colombos_1021.txt", row.names=FALSE, col.names=FALSE, sep = ",")
 
 #####
 # MDS con combat
@@ -133,8 +139,6 @@ polygon(xx,yy, density=0, col="black")
 #Normalizamos de nuevo
 select_quantile2 <- normalizeBetweenArrays(data_combat, method="quantile")
 boxplot(select_quantile2,outline=FALSE)
-
-# Set final. Exporto la matriz
 
 
 ####

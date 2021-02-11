@@ -71,12 +71,13 @@ def confusion(prom_essen_file, essen_value, esse_threshold, growth_threshold, ty
                 F_P.append(gen)
             if (essen_value == "ES" or essen_value == "ESD" or essen_value == "GD") and growth<growth_threshold:
                 V_N.append(gen)
+            
 
-    # print(type_essen)
-    # print("VP",len(V_P))
-    # print("VN",len(V_N))
-    # print("FP",len(F_P))
-    # print("FN",len(F_N))
+    print(type_essen)
+    print("VP",len(V_P))
+    print("VN",len(V_N))
+    print("FP",len(F_P))
+    print("FN",len(F_N))
     
     return confusion_metrics(len(V_P), len(V_N), len(F_P), len(F_N))
 
@@ -92,73 +93,73 @@ griffin_pvalue = {griffin_excel.loc[idx, 'Locus']:  griffin_excel.loc[idx, 'p va
 griffin_fko_TF_file="/home/agustin/FBA_Tesis/PROM_trabajo/analisis_esencialidad_TR/f_Griffin.txt"
 
 
-# confusion(griffin_fko_TF_file, griffin_pvalue, esse_threshold=0.1, growth_threshold=0.5*0.0584)
-# confusion( loerger_fko_TF_file, loerger_finalCall, esse_threshold=0.1, growth_threshold=0.5*0.0485, type_essen='loerger')
+confusion( griffin_fko_TF_file, griffin_pvalue, esse_threshold=0.1, growth_threshold=0.8*0.0584)
+confusion( loerger_fko_TF_file, loerger_finalCall, esse_threshold=0.1, growth_threshold=0.8*0.0485, type_essen='loerger')
 
-grafical_list=[]
-#[round(x * 0.01, 2) for x in range(1, 100,1)]
-#[round(x * 0.01, 1) for x in range(1, 100)]
-intervals=[round(x * 0.01, 2) for x in range(1, 100,1)]
-for x in intervals:
-    grafical_list.append(confusion(griffin_fko_TF_file, griffin_pvalue, esse_threshold=0.1, growth_threshold=x*0.0584))
-    #grafical_list.append(confusion( loerger_fko_TF_file, loerger_finalCall, esse_threshold=0.1, growth_threshold=x*0.0485, type_essen='loerger'))
+# grafical_list=[]
+# #[round(x * 0.01, 2) for x in range(1, 100,1)]
+# #[round(x * 0.01, 1) for x in range(1, 100)]
+# intervals=[round(x * 0.01, 2) for x in range(1, 100,1)]
+# for x in intervals:
+#     grafical_list.append(confusion(griffin_fko_TF_file, griffin_pvalue, esse_threshold=0.1, growth_threshold=x*0.0584))
+#     #grafical_list.append(confusion( loerger_fko_TF_file, loerger_finalCall, esse_threshold=0.1, growth_threshold=x*0.0485, type_essen='loerger'))
 
-accuracy_data=[]
-error_rate_data=[]
-sensitivity_data=[]
-False_positive_rate_data=[]
-True_positive_rate_data=[]
-specificy_data=[] 
-precision_data=[]
-prevalence_data=[]
-for element in grafical_list:
-    accuracy_data.append(element[0])
-    error_rate_data.append(element[1])
-    sensitivity_data.append(element[2])
-    False_positive_rate_data.append(element[3])
-    True_positive_rate_data.append(element[4])
-    precision_data.append(element[5])
-    prevalence_data.append(element[6])
+# accuracy_data=[]
+# error_rate_data=[]
+# sensitivity_data=[]
+# False_positive_rate_data=[]
+# True_positive_rate_data=[]
+# specificy_data=[] 
+# precision_data=[]
+# prevalence_data=[]
+# for element in grafical_list:
+#     accuracy_data.append(element[0])
+#     error_rate_data.append(element[1])
+#     sensitivity_data.append(element[2])
+#     False_positive_rate_data.append(element[3])
+#     True_positive_rate_data.append(element[4])
+#     precision_data.append(element[5])
+#     prevalence_data.append(element[6])
 
-import matplotlib.pyplot as plt
-plt.plot(
-intervals, accuracy_data, 'r-', 
-#intervals, error_rate_data, 'b-',
-intervals, sensitivity_data, 'g-', 
-intervals, False_positive_rate_data, 'b-', 
-#intervals, True_positive_rate_data, 'b--',
-intervals, precision_data, 'y-',
-intervals, prevalence_data, 'k-',
-)
+# import matplotlib.pyplot as plt
+# plt.plot(
+# intervals, accuracy_data, 'r-', 
+# #intervals, error_rate_data, 'b-',
+# intervals, sensitivity_data, 'g-', 
+# intervals, False_positive_rate_data, 'b-', 
+# #intervals, True_positive_rate_data, 'b--',
+# intervals, precision_data, 'y-',
+# intervals, prevalence_data, 'k-',
+# )
 
-plt.legend([
-'accuracy_data', 
-#'error_rate_data', 
-'sensitivity_data', 
-'False_positive_rate_data', 
-#'True_positive_rate_data', 
-'precision_data' , 
-'prevalence_data'
-])
+# plt.legend([
+# 'accuracy_data', 
+# #'error_rate_data', 
+# 'sensitivity_data', 
+# 'False_positive_rate_data', 
+# #'True_positive_rate_data', 
+# 'precision_data' , 
+# 'prevalence_data'
+# ])
 
-# Datos paper iEK1011
-#Grffin
-#paper_iEK1011=confusion_metrics(579, 235, 161, 31)
+# # Datos paper iEK1011
+# #Grffin
+# #paper_iEK1011=confusion_metrics(579, 235, 161, 31)
 
-#Loerger
-paper_iEK1011=confusion_metrics(666, 221, 73, 45)
+# #Loerger
+# paper_iEK1011=confusion_metrics(666, 221, 73, 45)
 
 
-plt.plot(0.2, paper_iEK1011[0], "ro")
-plt.plot(0.2, paper_iEK1011[2], "go")
-plt.plot(0.2, paper_iEK1011[3], "bo")
-plt.plot(0.2, paper_iEK1011[5], "yo")
-plt.plot(0.2, paper_iEK1011[6], "ko")
+# plt.plot(0.2, paper_iEK1011[0], "ro")
+# plt.plot(0.2, paper_iEK1011[2], "go")
+# plt.plot(0.2, paper_iEK1011[3], "bo")
+# plt.plot(0.2, paper_iEK1011[5], "yo")
+# plt.plot(0.2, paper_iEK1011[6], "ko")
 
-plt.show()
+# plt.show()
 
-#ROC curve
-plt.plot(
-False_positive_rate_data, sensitivity_data, 
-)
-plt.show()
+# #ROC curve
+# plt.plot(
+# False_positive_rate_data, sensitivity_data, 
+# )
+# plt.show()
