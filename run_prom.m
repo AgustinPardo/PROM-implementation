@@ -63,7 +63,7 @@ clear rev;
 checkObjective(iEK1011)
 %printRxnFormula(iEK1008,'BIOMASS__2');
 
-FBAsolution = optimizeCbModel(iEK1011,'max')
+%FBAsolution = optimizeCbModel(iEK1011,'max')
 %% Cargo otro modelo, veo su reaccion de biomasa y la guardo
 %     load('/home/agustin/FBA_Tesis/PROM_trabajo/convertion/iEK1011_m7H10_media.mat');
 %     biomass = checkObjective(iEK1008);
@@ -95,6 +95,10 @@ addpath('/home/agustin/cobratoolbox/PROM_Chandrasekaran');
 [v11, v12] = fastFVA(iEK1011);
 [f,f_ko,v,v_ko,status1,lostxns,probtfgene] =  promv2(iEK1011,expression_colombos_1021,expressionid_colombos_1021,z_regulator,z_targets,z_litevidence,z_prob_prior,[],v11,v12,[],[],[],1)
 
+
+%% Exporto las probabilidades (probtfgene). Tengo que unir z_regulator, z_targets y probtfgene
+T = table(z_regulator, z_targets, probtfgene);
+writetable(T,"probtfgene_Sanz_colombos_1021.txt");
 
 %% Exporto variables
 %Write the outputs in files

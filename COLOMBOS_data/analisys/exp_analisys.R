@@ -51,7 +51,7 @@ boxplot(exprs(gse_GLP1343),outline=FALSE)
 #######
 
 # exp_PROM_Original.txt
-expTable_PROM_original <- read.table("exp_PROM_Original.txt", header=TRUE, row.names=1, sep=",")
+expTable_PROM_original <- read.table("/home/agustin/FBA_Tesis/PROM_trabajo/COLOMBOS_data/colombos_GPL_sets/exp_PROM_Original.txt", header=TRUE, row.names=1, sep=",")
 
 # Sets de colombos
 colombos_GSE1642 <- read.table("/home/agustin/FBA_Tesis/PROM_trabajo/COLOMBOS_data/analisys/colombos_GSE1642.txt",  row.names=1, dec = "." ,skip=7,  header=FALSE, fill=TRUE)
