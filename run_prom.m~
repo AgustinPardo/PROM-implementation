@@ -104,7 +104,8 @@ percentil_tresh=[0,0.01,0.05,0.1,0.2,0.25,0.33,0.4,0.5,0.75,1]
 for i = percentil_tresh
     [v11, v12] = fastFVA(iEK1011);
     [f,f_ko,v,v_ko,status1,lostxns,probtfgene] =  promv2(iEK1011,expression,expressionid,z_regulator,z_targets,z_litevidence,z_prob_prior,[],v11,v12,[],[i],[],1);
-    T=table(transpose(f),'VariableNames', "t"+string(i));
+    T=table(transpose(f));
+    T.Properties.VariableNames{2} = 'a'+i
     f_table=[f_table T];
 end
 %% Exporto las probabilidades (probtfgene). Tengo que unir z_regulator, z_targets y probtfgene

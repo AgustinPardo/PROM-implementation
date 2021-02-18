@@ -19,8 +19,9 @@ Si
 Separo FT, de targets en archivos diferentes y saco autoregulacion.
 
 Creo un .sh para separar los TF de targets.
-Ademas los filtro segun corresponda respecto a la data del modelo, red regulatoria y expresion.
-
+Tengo que sacar los targets que estan fuera del modelo y los FT que quedan huerfanos cuando saco targets.
+Para ello hacer un ven diagram de los enes del modelo, targets, reguladores.
+Los filtro segun corresponda respecto a la data del modelo, red regulatoria y expresion.
 
 #Leo la red de Sanzen matlab
 
