@@ -9,21 +9,21 @@
 load('/home/agustin/FBA_Tesis/PROM_Chandrasekaran/mtbpromdata.mat');
 
 % Cargo los targets
-fid = fopen('/home/agustin/FBA_Tesis/PROM_trabajo/interseccion_reg_met/sanz_vs_iEK1011/targets_filter.txt','r');
+fid = fopen('/home/agustin/FBA_Tesis/PROM_trabajo/interseccion_reg_met/ernesto_vs_iEK1011/target_filter.txt','r');
 data = textscan(fid,'%s', 'Delimiter', '\n');
 fclose(fid);
 z_targets = data{1};
 clearvars fid data;
 
 % Cargo los reguladores
-fid = fopen('/home/agustin/FBA_Tesis/PROM_trabajo/interseccion_reg_met/sanz_vs_iEK1011/regulator_filter.txt','r');
+fid = fopen('/home/agustin/FBA_Tesis/PROM_trabajo/interseccion_reg_met/ernesto_vs_iEK1011/regulator_filter.txt','r');
 data = textscan(fid,'%s', 'Delimiter', '\n');
 fclose(fid);
 z_regulator = data{1};
 clearvars fid data;
 
 % Cargo z_litevidence
-filename = '/home/agustin/FBA_Tesis/PROM_trabajo/interseccion_reg_met/sanz_vs_iEK1011/litevidence_filter.txt';
+filename = '/home/agustin/FBA_Tesis/PROM_trabajo/interseccion_reg_met/ernesto_vs_iEK1011/litevidence_filter.txt';
 delimiter = {''};
 formatSpec = '%f%[^\n\r]';
 fileID = fopen(filename,'r');
@@ -33,7 +33,7 @@ z_litevidence = [dataArray{1:end-1}];
 clearvars filename delimiter formatSpec fileID dataArray ans;
 
 % Cargo z_prob_prior
-filename = '/home/agustin/FBA_Tesis/PROM_trabajo/interseccion_reg_met/sanz_vs_iEK1011/prob_prior_filter.txt';
+filename = '/home/agustin/FBA_Tesis/PROM_trabajo/interseccion_reg_met/ernesto_vs_iEK1011/prob_prior_filter.txt';
 delimiter = {''};
 formatSpec = '%f%[^\n\r]';
 fileID = fopen(filename,'r');
@@ -95,7 +95,7 @@ addpath('/home/agustin/cobratoolbox/PROM_Chandrasekaran');
 %function [f,f_ko,v,v_ko,status1,lostxns,probtfgene] =  promv2(model,expression,expressionid,regulator,targets,litevidence,prob_prior,subsets,v11,v12,KAPPA,DATATHRESHVAL,probtfgene,sizeflag)
 
 [v11, v12] = fastFVA(iEK1011);
-[f,f_ko,v,v_ko,status1,lostxns,probtfgene] =  promv2(iEK1011,expression,expressionid,z_regulator,z_targets,z_litevidence,z_prob_prior,[],v11,v12,[],[],[],1);
+[f,f_ko,v,v_ko,status1,lostxns,probtfgene] =  promv2(iEK1011,expression_colombos_1021,expressionid_colombos_1021,z_regulator,z_targets,z_litevidence,z_prob_prior,[],v11,v12,[],[],[],1);
 
 %% PROM con un for
 u_z_regulator=unique(z_regulator);
@@ -138,8 +138,8 @@ T = array2table(diff_f,'VariableNames',u_z_regulator);
 YourArray = table2array(T);
 Tt = array2table(YourArray.');
 Tt.Properties.RowNames = T.Properties.VariableNames;
-writetable(Tt,"diff_f_m7H10_sic.txt",'WriteRowNames',true);
+writetable(Tt,"diff_f_m7H10_eic.txt",'WriteRowNames',true);
 
 % f solo
 t=table(u_z_regulator,transpose(f));
-writetable(t,"f_m7H10_sic.txt",'WriteRowNames',true);
+writetable(t,"f_m7H10_eic.txt",'WriteRowNames',true);
