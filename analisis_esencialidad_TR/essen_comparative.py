@@ -1,5 +1,6 @@
 import pandas as pd
 import matplotlib.pyplot as plt
+from sklearn.metrics import roc_curve, auc
 
 def confusion_raw(growth_file,essen_dic):
     out=[]
@@ -97,7 +98,7 @@ griffin_fko_TF_file="/home/agustin/FBA_Tesis/PROM_trabajo/analisis_esencialidad_
 # confusion( griffin_fko_TF_file, griffin_pvalue, esse_threshold=0.1, growth_threshold=0.2*0.0584)
 # confusion( loerger_fko_TF_file, loerger_finalCall, esse_threshold=0.1, growth_threshold=0.2*0.0485, type_essen='loerger')
 
-loerger_files_files=["/home/agustin/FBA_Tesis/PROM_trabajo/analisis_esencialidad_TR/Ernesto_iEK1011_437/f_DeJesus_ei437.txt",
+loerger_files=["/home/agustin/FBA_Tesis/PROM_trabajo/analisis_esencialidad_TR/Ernesto_iEK1011_437/f_DeJesus_ei437.txt",
                 "/home/agustin/FBA_Tesis/PROM_trabajo/analisis_esencialidad_TR/Ernesto_iEK1011_colombos/f_DeJesus_eic.txt",
                 "/home/agustin/FBA_Tesis/PROM_trabajo/analisis_esencialidad_TR/Sanz_iEK1011_437/f_DeJesus_si437.txt",
                 "/home/agustin/FBA_Tesis/PROM_trabajo/analisis_esencialidad_TR/Sanz_iEK1011_colombos/f_DeJesus_sic.txt"]
@@ -107,15 +108,17 @@ griffin_files=["/home/agustin/FBA_Tesis/PROM_trabajo/analisis_esencialidad_TR/Er
                 "/home/agustin/FBA_Tesis/PROM_trabajo/analisis_esencialidad_TR/Sanz_iEK1011_437/f_Griffin_si437.txt",
                 "/home/agustin/FBA_Tesis/PROM_trabajo/analisis_esencialidad_TR/Sanz_iEK1011_colombos/f_Griffin_sic.txt"]
 
-for file in griffin_files:
+# CAMBIAR el set de archivos a usar
+for file in loerger_files:
     grafical_list=[]
     #[round(x * 0.01, 2) for x in range(1, 100,1)]
     #[round(x * 0.01, 1) for x in range(1, 100)]
     intervals=[round(x * 0.01, 2) for x in range(1, 100,1)]
     for x in intervals:
         label= file.split("/")[-1].split(".")[0]
-        grafical_list.append(confusion(file, griffin_pvalue, esse_threshold=0.1, growth_threshold=x*0.0584))
-        #grafical_list.append(confusion( file, loerger_finalCall, esse_threshold=0.1, growth_threshold=x*0.0485, type_essen='loerger'))
+        # CAMBIAR!
+        #grafical_list.append(confusion(file, griffin_pvalue, esse_threshold=0.1, growth_threshold=x*0.0584))
+        grafical_list.append(confusion( file, loerger_finalCall, esse_threshold=0.1, growth_threshold=x*0.0485, type_essen='loerger'))
 
     accuracy_data=[]
     error_rate_data=[]
@@ -134,6 +137,27 @@ for file in griffin_files:
         precision_data.append(element[5])
         prevalence_data.append(element[6])
 
+    # ROC curve
+    print('AUC: {}'.format(auc(False_positive_rate_data, sensitivity_data)))
+    plt.figure(figsize=(10, 8))
+    lw = 2
+    plt.plot(False_positive_rate_data, sensitivity_data, color='darkorange',
+             lw=lw, label='ROC curve')
+    plt.plot([0, 1], [0, 1], color='navy', lw=lw, linestyle='--')
+    plt.xlim([0.0, 1.0])
+    plt.ylim([0.0, 1.05])
+    plt.yticks([i/20.0 for i in range(21)])
+    plt.xticks([i/20.0 for i in range(21)])
+    plt.xlabel('False Positive Rate')
+    plt.ylabel('True Positive Rate')
+    plt.title(label)
+    plt.plot([], [], ' ', label='AUC: {}'.format(auc(False_positive_rate_data, sensitivity_data)))
+    plt.legend(loc='lower right')
+    plt.savefig("ROC_"+label+".png", dpi = 200)
+    plt.clf()
+    
+
+    # Curvas de metricas de confusion cambiando el growth rate threshold
     plt.plot(
     intervals, accuracy_data, 'r-', 
     #intervals, error_rate_data, 'b-',
@@ -148,8 +172,8 @@ for file in griffin_files:
 
     plt.ylim([0, 1])
 
-    plt.xlabel("grow rate threshold")
-    plt.ylabel("prediction metrix")
+    plt.xlabel("Grow rate threshold")
+    plt.ylabel("Prediction metric")
 
     plt.legend([
     'accuracy_data', 
@@ -178,8 +202,14 @@ for file in griffin_files:
     plt.clf()
     #plt.show()
 
-    #ROC curve
-    # plt.plot(
-    # False_positive_rate_data, sensitivity_data, 
-    # )
-    # plt.show()
+    # #ROC curve
+    # plt.plot( False_positive_rate_data, sensitivity_data )
+    # plt.plot([-1, 1], [-1, 1], ls="--", c=".3")
+    # plt.title(label)
+    # plt.ylim([0, 1])
+    # plt.xlim([0, 1])
+    # plt.xlabel("False positive rate")
+    # plt.ylabel("Sensitivity (True positive rate)")
+
+    # plt.savefig("ROC_"+label+".png", dpi = 200)
+    # plt.clf()

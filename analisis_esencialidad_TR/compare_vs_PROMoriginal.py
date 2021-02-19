@@ -7,7 +7,7 @@ non_esential_PROM_correct=["Rv0117","Rv0212c","Rv0353","Rv0491","Rv0586",
                             "Rv3080c","Rv3133c","Rv3279c","Rv3286c","Rv3574","Rv1785c",
                             "Rv1267c"]
 all_PROM_analized_genes=candidate_essential_PROM+evidence_esential_PROM_correct+evidence_esential_PROM_incorrect+non_esential_PROM_correct
-
+PROM_essential_genes=candidate_essential_PROM+evidence_esential_PROM_correct
 
 table = {'Type of prediction': ['candidate_essential_PROM','evidence_esential_PROM_correct',
                                 'evidence_esential_PROM_incorrect','non_esential_PROM_correct', "Totales", 'Total escenciales', 'Nuevos escenciales'],
@@ -99,7 +99,7 @@ for file in files_list:
     for key,value in dictionary.items():
         if value < growth_tresh:
             total_esenciales.append(key)
-            if key not in all_PROM_analized_genes:
+            if key not in PROM_essential_genes:
                 new_esenciales.append(key)
     # Teniendo en cuenta la predicion sin compararla con
     # print("Total escenciales: "+ str(len(total_esenciales)))
