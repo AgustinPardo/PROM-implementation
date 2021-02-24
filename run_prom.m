@@ -108,8 +108,8 @@ for i = percentil_tresh
     f_table=[f_table T];
 end
 %% Exporto las probabilidades (probtfgene). Tengo que unir z_regulator, z_targets y probtfgene
-%T = table(z_regulator, z_targets, probtfgene);
-%writetable(T,"probtfgene_Sanz_colombos_1021.txt");
+T = table(z_regulator, z_targets, probtfgene);
+writetable(T,"probtfgene_Ernesto_colombos.txt");
 
 %% Exporto variables
 %Write the outputs in files

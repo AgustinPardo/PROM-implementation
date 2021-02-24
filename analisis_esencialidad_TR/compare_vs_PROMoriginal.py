@@ -31,7 +31,8 @@ for file in files_list:
     label= file.split("/")[-1].split(".")[0]
     df2 = pandas.read_csv(file)
     dictionary=pandas.Series(df2.Var1.values,index=df2.Row).to_dict()
-    growth_tresh=95
+    #95
+    growth_tresh=99.5
 
     candidate_essential_PROM_P=[]
     candidate_essential_PROM_N=[]
