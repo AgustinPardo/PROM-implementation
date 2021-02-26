@@ -27,6 +27,12 @@ files_list=["/home/agustin/FBA_Tesis/PROM_trabajo/analisis_esencialidad_TR/Ernes
             "/home/agustin/FBA_Tesis/PROM_trabajo/analisis_esencialidad_TR/Sanz_iEK1011_colombos/diff_f_Griffin_sic.txt",
             "/home/agustin/FBA_Tesis/PROM_trabajo/analisis_esencialidad_TR/Sanz_iEK1011_colombos/diff_f_m7H10_sic.txt"
             ]
+
+candidate_essential_PROM_N_totales=[]
+evidence_esential_PROM_correct_N_totales=[]
+evidence_esential_PROM_incorrect_N_totales=[]
+non_esential_PROM_correct_N_totales=[]
+
 for file in files_list:
     label= file.split("/")[-1].split(".")[0]
     df2 = pandas.read_csv(file)
@@ -105,7 +111,6 @@ for file in files_list:
     # Teniendo en cuenta la predicion sin compararla con
     # print("Total escenciales: "+ str(len(total_esenciales)))
     # print("Nuevos esenciales: "+ str(len(new_esenciales)))
-    print(positivos)
     data = [len(candidate_essential_PROM_P), len(evidence_esential_PROM_correct_P), 
             len(evidence_esential_PROM_incorrect_P), len(non_esential_PROM_correct_P), positivos, len(total_esenciales), len(new_esenciales) ]
     df_table[label+" Positivo"] = data
@@ -114,8 +119,18 @@ for file in files_list:
             len(evidence_esential_PROM_incorrect_N), len(non_esential_PROM_correct_N), negativos,"-", "-"]
     df_table[label+" Negativo"] = data
 
-print(df_table)
+    candidate_essential_PROM_N_totales.append(candidate_essential_PROM_N)
+    evidence_esential_PROM_correct_N_totales.append(evidence_esential_PROM_correct_N)
+    evidence_esential_PROM_incorrect_N_totales.append(evidence_esential_PROM_incorrect_N)
+    non_esential_PROM_correct_N_totales.append(non_esential_PROM_correct_N)
+
 df_table= df_table.T
 df_table.to_csv('compare_vs_PROMoriginal.csv')
 
+flatten = lambda t: [item for sublist in t for item in sublist]
+
+print(flatten(candidate_essential_PROM_N_totales))
+print(set(flatten(evidence_esential_PROM_correct_N_totales)))
+print(set(flatten(evidence_esential_PROM_incorrect_N_totales)))
+print(set(flatten(non_esential_PROM_correct_N_totales)))
 
