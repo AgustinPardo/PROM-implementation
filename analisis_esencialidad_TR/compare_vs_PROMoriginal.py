@@ -14,16 +14,17 @@ table = {'Type of prediction': ['candidate_essential_PROM','evidence_esential_PR
         }
 df_table = pandas.DataFrame(table, columns = ['Type of prediction'])
 
-files_list=["/home/agustin/FBA_Tesis/PROM_trabajo/analisis_esencialidad_TR/Ernesto_iEK1011_437/diff_f_DeJesus_ei437.txt",
+files_list=[
+            # "/home/agustin/FBA_Tesis/PROM_trabajo/analisis_esencialidad_TR/Ernesto_iEK1011_437/diff_f_DeJesus_ei437.txt",
             "/home/agustin/FBA_Tesis/PROM_trabajo/analisis_esencialidad_TR/Ernesto_iEK1011_437/diff_f_Griffin_ei437.txt",
             "/home/agustin/FBA_Tesis/PROM_trabajo/analisis_esencialidad_TR/Ernesto_iEK1011_437/diff_f_m7H10_ei437.txt",
-            "/home/agustin/FBA_Tesis/PROM_trabajo/analisis_esencialidad_TR/Ernesto_iEK1011_colombos/diff_f_DeJesus_eic.txt",
+            # "/home/agustin/FBA_Tesis/PROM_trabajo/analisis_esencialidad_TR/Ernesto_iEK1011_colombos/diff_f_DeJesus_eic.txt",
             "/home/agustin/FBA_Tesis/PROM_trabajo/analisis_esencialidad_TR/Ernesto_iEK1011_colombos/diff_f_Griffin_eic.txt",
             "/home/agustin/FBA_Tesis/PROM_trabajo/analisis_esencialidad_TR/Ernesto_iEK1011_colombos/diff_f_m7H10_eic.txt",
-            "/home/agustin/FBA_Tesis/PROM_trabajo/analisis_esencialidad_TR/Sanz_iEK1011_437/diff_f_DeJesus_si437.txt",
+            # "/home/agustin/FBA_Tesis/PROM_trabajo/analisis_esencialidad_TR/Sanz_iEK1011_437/diff_f_DeJesus_si437.txt",
             "/home/agustin/FBA_Tesis/PROM_trabajo/analisis_esencialidad_TR/Sanz_iEK1011_437/diff_f_Griffin_si437.txt",
             "/home/agustin/FBA_Tesis/PROM_trabajo/analisis_esencialidad_TR/Sanz_iEK1011_437/diff_f_m7H10_si437.txt",
-            "/home/agustin/FBA_Tesis/PROM_trabajo/analisis_esencialidad_TR/Sanz_iEK1011_colombos/diff_f_DeJesus_sic.txt",
+            # "/home/agustin/FBA_Tesis/PROM_trabajo/analisis_esencialidad_TR/Sanz_iEK1011_colombos/diff_f_DeJesus_sic.txt",
             "/home/agustin/FBA_Tesis/PROM_trabajo/analisis_esencialidad_TR/Sanz_iEK1011_colombos/diff_f_Griffin_sic.txt",
             "/home/agustin/FBA_Tesis/PROM_trabajo/analisis_esencialidad_TR/Sanz_iEK1011_colombos/diff_f_m7H10_sic.txt"
             ]
@@ -32,6 +33,8 @@ candidate_essential_PROM_N_totales=[]
 evidence_esential_PROM_correct_N_totales=[]
 evidence_esential_PROM_incorrect_N_totales=[]
 non_esential_PROM_correct_N_totales=[]
+
+non_esential_PROM_below_X=[]
 
 for file in files_list:
     label= file.split("/")[-1].split(".")[0]
@@ -55,6 +58,7 @@ for file in files_list:
             candidate_essential_PROM_P.append(element)
         else:
             candidate_essential_PROM_N.append(element)
+            print(prediction_value)
 
     for element in evidence_esential_PROM_correct:
         prediction_value=float(dictionary[element])
@@ -76,6 +80,8 @@ for file in files_list:
             non_esential_PROM_correct_P.append(element)
         else:
             non_esential_PROM_correct_N.append(element)
+        if prediction_value < 50:
+            non_esential_PROM_below_X.append(element)
 
     # print(label)
     # print("candidate_essential_PROM")
@@ -134,3 +140,4 @@ print(set(flatten(evidence_esential_PROM_correct_N_totales)))
 print(set(flatten(evidence_esential_PROM_incorrect_N_totales)))
 print(set(flatten(non_esential_PROM_correct_N_totales)))
 
+print(set((non_esential_PROM_below_X)))

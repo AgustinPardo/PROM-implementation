@@ -26,13 +26,13 @@ def confusion_metrics(V_P, V_N, F_P, F_N):
 
     rounder = lambda num: round(num, 2)
  
-    # print("accuracy", rounder(accuracy))
-    # print("error_rate", rounder(error_rate))
-    # print("sensitivity", rounder(sensitivity))
-    # print("False_positive_rate", rounder(False_positive_rate))
-    # print("True_positive_rate", rounder(True_positive_rate))
-    # print("precision", rounder(precision))
-    # print("prevalence", rounder(prevalence))
+    print("accuracy", rounder(accuracy))
+    print("error_rate", rounder(error_rate))
+    print("sensitivity", rounder(sensitivity))
+    print("False_positive_rate", rounder(False_positive_rate))
+    print("True_positive_rate", rounder(True_positive_rate))
+    print("precision", rounder(precision))
+    print("prevalence", rounder(prevalence))
 
     return [rounder(accuracy), rounder(error_rate), rounder(sensitivity), 
             rounder(False_positive_rate), rounder(True_positive_rate), rounder(precision), 
@@ -52,7 +52,6 @@ def confusion(prom_essen_file, essen_value, esse_threshold, growth_threshold, ty
         essen_value=triada[2]
 
         if type_essen == 'griffin':
-            print(gen)
             # Verdadero Positivo - predicts that it grows (not essential) and is correct.
             if essen_value>esse_threshold and growth>growth_threshold:
                 V_P.append(gen)
@@ -67,6 +66,7 @@ def confusion(prom_essen_file, essen_value, esse_threshold, growth_threshold, ty
                 V_N.append(gen)
 
         if type_essen == 'loerger':
+#Final Call key: Essential (ES), Essential Domain (ESD), Growth-Defect (GD), Non-Essential (NE),  Growth-Advantage (GA), and Uncertain (for short empty genes).
             if (essen_value == "NE" or essen_value == "GA") and growth>growth_threshold:
                 V_P.append(gen)
             if (essen_value == "NE" or essen_value == "GA") and growth<growth_threshold:
@@ -75,13 +75,21 @@ def confusion(prom_essen_file, essen_value, esse_threshold, growth_threshold, ty
                 F_P.append(gen)
             if (essen_value == "ES" or essen_value == "ESD" or essen_value == "GD") and growth<growth_threshold:
                 V_N.append(gen)
+
             
     print(prom_essen_file.split("/")[-1])
     print(type_essen)
+    if type_essen == "griffin":
+        print(growth_threshold)
     print("VP",len(V_P))
     print("VN",len(V_N))
     print("FP",len(F_P))
     print("FN",len(F_N))
+
+    print("VP", V_P)
+    print("VN", V_N)
+    print("FP", F_P)
+    print("FN", F_N)
     
     return confusion_metrics(len(V_P), len(V_N), len(F_P), len(F_N))
 
@@ -89,15 +97,22 @@ def confusion(prom_essen_file, essen_value, esse_threshold, growth_threshold, ty
 loerger_file = "mbo002173137st3.xlsx"
 loerger_excel = pd.read_excel(loerger_file,skiprows = 1,keep_default_na=False)
 loerger_finalCall = {loerger_excel.loc[idx, 'ORF ID']:  loerger_excel.loc[idx, 'Final Call'] for idx in range(loerger_excel.shape[0])}
-loerger_fko_TF_file="/home/agustin/FBA_Tesis/PROM_trabajo/analisis_esencialidad_TR/Sanz_iEK1011_437/f_DeJesus_si437.txt"
+loerger_fko_TF_file="/home/agustin/FBA_Tesis/PROM_trabajo/analisis_esencialidad_TR/Ernesto_iEK1011_437/f_Griffin_ei437.txt"
 
 griffin_file = "ppat.1002251.s002.xlsx"
 griffin_excel = pd.read_excel(griffin_file,skiprows = 9,keep_default_na=False)
 griffin_pvalue = {griffin_excel.loc[idx, 'Locus']:  griffin_excel.loc[idx, 'p value'] for idx in range(griffin_excel.shape[0])}
-griffin_fko_TF_file="/home/agustin/FBA_Tesis/PROM_trabajo/analisis_esencialidad_TR/Ernesto_iEK1011_437/f_Griffin_ei437.txt"
+griffin_fko_TF_file="/home/agustin/FBA_Tesis/PROM_trabajo/analisis_esencialidad_TR/Ernesto_iEK1011_colombos/f_Griffin_eic.txt"
 
+# griffin_sassetti_data= {griffin_excel.loc[idx, 'Locus']:  griffin_excel.loc[idx, '(Sassetti et al 2003)'] for idx in range(griffin_excel.shape[0])}
+# fko_TF= open(griffin_fko_TF_file,"r")
+# fko_TF_lines=fko_TF.readlines()[1:]
+# for line in fko_TF_lines:
+#     gen=line.split(",")[0]
+#     data=griffin_sassetti_data[gen]
+#     print(gen, data, sep = " ")
 
-confusion( griffin_fko_TF_file, griffin_pvalue, esse_threshold=0.1, growth_threshold=0.2*0.0584)
+# confusion( griffin_fko_TF_file, griffin_pvalue, esse_threshold=0.1, growth_threshold=0.95*0.0584)
 # confusion( loerger_fko_TF_file, loerger_finalCall, esse_threshold=0.1, growth_threshold=0.2*0.0485, type_essen='loerger')
 
 # loerger_files=["/home/agustin/FBA_Tesis/PROM_trabajo/analisis_esencialidad_TR/Ernesto_iEK1011_437/f_DeJesus_ei437.txt",
@@ -105,10 +120,12 @@ confusion( griffin_fko_TF_file, griffin_pvalue, esse_threshold=0.1, growth_thres
 #                 "/home/agustin/FBA_Tesis/PROM_trabajo/analisis_esencialidad_TR/Sanz_iEK1011_437/f_DeJesus_si437.txt",
 #                 "/home/agustin/FBA_Tesis/PROM_trabajo/analisis_esencialidad_TR/Sanz_iEK1011_colombos/f_DeJesus_sic.txt"]
 
-# griffin_files=["/home/agustin/FBA_Tesis/PROM_trabajo/analisis_esencialidad_TR/Ernesto_iEK1011_437/f_Griffin_ei437.txt",
-#                 "/home/agustin/FBA_Tesis/PROM_trabajo/analisis_esencialidad_TR/Ernesto_iEK1011_colombos/f_Griffin_eic.txt",
-#                 "/home/agustin/FBA_Tesis/PROM_trabajo/analisis_esencialidad_TR/Sanz_iEK1011_437/f_Griffin_si437.txt",
-#                 "/home/agustin/FBA_Tesis/PROM_trabajo/analisis_esencialidad_TR/Sanz_iEK1011_colombos/f_Griffin_sic.txt"]
+griffin_files=["/home/agustin/FBA_Tesis/PROM_trabajo/analisis_esencialidad_TR/Ernesto_iEK1011_437/f_Griffin_ei437.txt",
+                "/home/agustin/FBA_Tesis/PROM_trabajo/analisis_esencialidad_TR/Ernesto_iEK1011_colombos/f_Griffin_eic.txt",
+                "/home/agustin/FBA_Tesis/PROM_trabajo/analisis_esencialidad_TR/Sanz_iEK1011_437/f_Griffin_si437.txt",
+                "/home/agustin/FBA_Tesis/PROM_trabajo/analisis_esencialidad_TR/Sanz_iEK1011_colombos/f_Griffin_sic.txt"]
+
+griffin_threshold_by_graphic=[0.85,0.85,0.65,0.8]
 
 # # CAMBIAR el set de archivos a usar
 # for file in griffin_files:
@@ -249,3 +266,10 @@ confusion( griffin_fko_TF_file, griffin_pvalue, esse_threshold=0.1, growth_thres
 
 #     plt.savefig(label+"_raw"+".png", dpi = 200)
 #     plt.clf()
+
+
+## Calculo la mtriz de confusion para el threshold seleccionado y veo quienes son los FP
+
+
+for index in range(len(griffin_files)):
+    confusion(griffin_files[index], griffin_pvalue, esse_threshold=0.1, growth_threshold=griffin_threshold_by_graphic[index]*0.0584)
