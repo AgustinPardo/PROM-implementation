@@ -63,24 +63,24 @@ clear rev;
 % Chequeo Biomasa actual
 %checkObjective(iEK1011)
 %printRxnFormula(iEK1008,'BIOMASS__2');
-FBAsolution = optimizeCbModel(iEK1011,'max')
+FBAsolution = optimizeCbModel(model,'max')
 
 
-%% Cargo otro modelo, veo su reaccion de biomasa y la guardo
-%     load('/home/agustin/FBA_Tesis/PROM_trabajo/convertion/iEK1011_m7H10_media.mat');
-%     biomass = checkObjective(iEK1008);
-%     biomass_rxn_c = char(printRxnFormula(iEK1008,biomass));
-% 
-% Cambio la biomasa
-%     iEK1011 = addReaction(iEK1011, 'biomass_rxn_c','reactionFormula', biomass_rxn_c);
-%     iEK1011 = changeObjective(iEK1011,'biomass_rxn_c');
+% Cargo otro modelo, veo su reaccion de biomasa y la guardo
+    load('/home/agustin/FBA_Tesis/PROM_trabajo/convertion/iEK1011_inVivo_media.mat');
+    biomass = checkObjective(iEK1011);
+    biomass_rxn_c = char(printRxnFormula(iEK1011,biomass));
 
-% Chequeo el cambio de Biomasa
-    %checkObjective(iEK1008)
+Cambio la biomasa
+    iEK1011 = addReaction(iEK1011, 'biomass_rxn_c','reactionFormula', biomass_rxn_c);
+    iEK1011 = changeObjective(iEK1011,'biomass_rxn_c');
+
+Chequeo el cambio de Biomasa
+    checkObjective(iEK1008)
 %%
 
-%% Veo el medio. Para eso tengo que ver las reacciones de exchange EX
-%printConstraints(model,-500, +500)
+% Veo el medio. Para eso tengo que ver las reacciones de exchange EX
+printConstraints(iEK1011,-500, +500)
 %%
 
 addpath('/home/agustin/cobratoolbox/PROM_Chandrasekaran');
@@ -94,8 +94,8 @@ addpath('/home/agustin/cobratoolbox/PROM_Chandrasekaran');
 %% Corro PROM version 2
 %function [f,f_ko,v,v_ko,status1,lostxns,probtfgene] =  promv2(model,expression,expressionid,regulator,targets,litevidence,prob_prior,subsets,v11,v12,KAPPA,DATATHRESHVAL,probtfgene,sizeflag)
 
-[v11, v12] = fastFVA(iEK1011);
-[f,f_ko,v,v_ko,status1,lostxns,probtfgene] =  promv2(iEK1011,expression_colombos_1021,expressionid_colombos_1021,z_regulator,z_targets,z_litevidence,z_prob_prior,[],v11,v12,[],[],[],1);
+[v11, v12] = fastFVA(model);
+[f,f_ko,v,v_ko,status1,lostxns,probtfgene] =  promv2(model,expression,expressionid,regulator, targets,litevidence,prob_prior,[],v11,v12,[],[],[],1);
 
 %% PROM con un for
 u_z_regulator=unique(z_regulator);
@@ -130,16 +130,16 @@ dlmwrite('f.txt', f, 'delimiter','\t','newline','pc','precision',13);
 
 %% Analisis de resultados
 % diff
-FBAsolution = optimizeCbModel(iEK1011,'max')
+FBAsolution = optimizeCbModel(model,'max')
 diff_f= (f/FBAsolution.f)*100;
-u_z_regulator=unique(z_regulator);
-T = array2table(diff_f,'VariableNames',u_z_regulator);
+regulator=unique(regulator);
+T = array2table(diff_f,'VariableNames',regulator);
 
 YourArray = table2array(T);
 Tt = array2table(YourArray.');
 Tt.Properties.RowNames = T.Properties.VariableNames;
-writetable(Tt,"diff_f_m7H10_eic.txt",'WriteRowNames',true);
+writetable(Tt,"diff_t_PROM_original.txt",'WriteRowNames',true);
 
 % f solo
-t=table(u_z_regulator,transpose(f));
-writetable(t,"f_m7H10_eic.txt",'WriteRowNames',true);
+t=table(regulator,transpose(f_ko));
+writetable(t,"f_ko_PROM_original.txt",'WriteRowNames',true);
