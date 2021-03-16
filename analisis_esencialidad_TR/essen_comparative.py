@@ -57,20 +57,23 @@ def confusion(prom_essen_file, essen_value, esse_threshold, growth_threshold, ty
         growth=float(triada[1])
         essen_value=triada[2]
 
-        if type_essen == 'griffin':
-            # Verdadero Negativo - predicts that it grows (not essential) and is correct.
-            # print(growth, growth_threshold)
-            if essen_value>esse_threshold and growth>growth_threshold:
-                V_N.append(gen)
-            # Falso Positivo
-            if essen_value>=esse_threshold and growth<=growth_threshold:
-                F_P.append(gen)
-            # Falso Negativo
-            if essen_value<esse_threshold and growth>growth_threshold:
-                F_N.append(gen)
-            # Verdadero Positivo
-            if essen_value<=esse_threshold and growth<=growth_threshold:
-                V_P.append(gen)
+        # Filtro genes que me interesan
+        if gen in core_genes_uniprot_mycobrowser:
+
+            if type_essen == 'griffin':
+                # Verdadero Negativo - predicts that it grows (not essential) and is correct.
+                # print(growth, growth_threshold)
+                if essen_value>esse_threshold and growth>growth_threshold:
+                    V_N.append(gen)
+                # Falso Positivo
+                if essen_value>=esse_threshold and growth<=growth_threshold:
+                    F_P.append(gen)
+                # Falso Negativo
+                if essen_value<esse_threshold and growth>growth_threshold:
+                    F_N.append(gen)
+                # Verdadero Positivo
+                if essen_value<=esse_threshold and growth<=growth_threshold:
+                    V_P.append(gen)
 
         if type_essen == 'loerger':
 #Final Call key: Essential (ES), Essential Domain (ESD), Growth-Defect (GD), Non-Essential (NE),  Growth-Advantage (GA), and Uncertain (for short empty genes).
@@ -131,14 +134,29 @@ loerger_files=["/home/agustin/FBA_Tesis/PROM_trabajo/analisis_esencialidad_TR/Er
                 "/home/agustin/FBA_Tesis/PROM_trabajo/analisis_esencialidad_TR/Sanz_iEK1011_colombos/f_DeJesus_sic.txt"]
 
 griffin_files=["/home/agustin/FBA_Tesis/PROM_trabajo/analisis_esencialidad_TR/Ernesto_iEK1011_437/f_Griffin_ei437.txt",
-                "/home/agustin/FBA_Tesis/PROM_trabajo/analisis_esencialidad_TR/Ernesto_iEK1011_colombos/f_Griffin_eic.txt",
-                "/home/agustin/FBA_Tesis/PROM_trabajo/analisis_esencialidad_TR/Sanz_iEK1011_437/f_Griffin_si437.txt",
-                "/home/agustin/FBA_Tesis/PROM_trabajo/analisis_esencialidad_TR/Sanz_iEK1011_colombos/f_Griffin_sic.txt"
+                # "/home/agustin/FBA_Tesis/PROM_trabajo/analisis_esencialidad_TR/Ernesto_iEK1011_colombos/f_Griffin_eic.txt",
+                # "/home/agustin/FBA_Tesis/PROM_trabajo/analisis_esencialidad_TR/Sanz_iEK1011_437/f_Griffin_si437.txt",
+                # "/home/agustin/FBA_Tesis/PROM_trabajo/analisis_esencialidad_TR/Sanz_iEK1011_colombos/f_Griffin_sic.txt"
                 ]
 
-griffin_threshold_by_graphic=[0.85,0.85,0.65,0.8]
-#griffin_threshold_by_graphic=[0.80]
-DeJesus_threshold_by_graphic=[0.8,0.75,0.525,0.675]
+core_genes=["Rv3246c","Rv0001","Rv1221","Rv1475c","Rv2711","Rv0212c",
+            "Rv0494","Rv0981","Rv1395","Rv1657","Rv1846c","Rv2213",
+            "Rv2710","Rv3286c","Rv3291c","Rv3575c","Rv0117","Rv0182c","Rv0353",
+            "Rv0445c","Rv0465c","Rv0576","Rv0586","Rv0602","Rv0792c","Rv0818",
+            "Rv0823c","Rv0844c","Rv1027c","Rv1033c","Rv1267c","Rv1287","Rv1316c","Rv1359",
+            "Rv1675c","Rv1785c","Rv1956","Rv1963c","Rv1985c","Rv1994c","Rv2021c","Rv2034",
+            "Rv2175c","Rv2704","Rv2718c","Rv2788","Rv3080c","Rv3133c","Rv3164c","Rv3328c","Rv3334",
+            "Rv3414c","Rv3416","Rv3557c","Rv3678c","Rv3681c","Rv3692","Rv3744"]
+
+core_genes_uniprot=["Rv0981","Rv2710","Rv3286c","Rv3223c","Rv0182c","Rv0844c","Rv1027c",
+                    "Rv1956","Rv1963c","Rv3133c","Rv3414c","Rv3416","Rv0465c","Rv3080c","Rv3328c","Rv3681c",
+                    "Rv2069","Rv3911","Rv3676","Rv3003c","Rv3246c","Rv0485","Rv1931c","Rv2745c","Rv3082c",
+                    "Rv3849","Rv1221"]
+
+core_genes_uniprot_mycobrowser= ["Rv1221","Rv2711","Rv2374c","Rv0491","Rv3246c","Rv0485","Rv1931c","Rv2745c",
+                            "Rv3082c","Rv3849","Rv0182c","Rv0844c","Rv1027c","Rv0981","Rv1956","Rv1963c","Rv3133c","Rv3414c","Rv3416",
+                            "Rv2069","Rv3911","Rv2359","Rv1909c","Rv1316c","Rv1675c","Rv1994c","Rv2718c","Rv0465c","Rv3080c","Rv3328c","Rv3681c",
+                            "Rv2710","Rv3286c","Rv3223c","Rv0576","Rv0212c"]
 
 # CAMBIAR el set de archivos a usar
 for file in griffin_files:
@@ -150,7 +168,7 @@ for file in griffin_files:
     for x in intervals:
         label= file.split("/")[-1].split(".")[0]
         # CAMBIAR!
-        #grafical_list.append(confusion(file, griffin_pvalue, esse_threshold=0.1, growth_threshold=x*0.0584))
+        grafical_list.append(confusion(file, griffin_pvalue, esse_threshold=0.1, growth_threshold=x*0.0584))
         #grafical_list.append(confusion( file, loerger_finalCall, esse_threshold=0.1, growth_threshold=x*0.0485, type_essen='loerger'))
 
     accuracy_data=[]
@@ -254,35 +272,39 @@ for file in griffin_files:
 # # #     # plt.savefig("ROC_"+label+".png", dpi = 200)
 # # #     # plt.clf()
 
-#     # Curvas de V_P, V_N, F_P, F_N sobre total
-#     # Curvas de metricas de confusion cambiando el growth rate threshold
-#     plt.plot(
-#     intervals, V_P, 'r-', 
-#     intervals, V_N, 'g-', 
-#     intervals, F_P, 'b-', 
-#     intervals, F_N, 'y-',
-#     )
+    # Curvas de V_P, V_N, F_P, F_N sobre total
+    # Curvas de metricas de confusion cambiando el growth rate threshold
+    plt.plot(
+    intervals, V_P, 'r-', 
+    intervals, V_N, 'g-', 
+    intervals, F_P, 'b-', 
+    intervals, F_N, 'y-',
+    )
 
-#     plt.title(label)
+    plt.title(label)
 
-#     plt.ylim([0, 1])
+    plt.ylim([0, 1])
 
-#     plt.xlabel("Grow rate threshold")
-#     plt.ylabel("Prediction")
+    plt.xlabel("Grow rate threshold")
+    plt.ylabel("Prediction")
 
-#     plt.legend([
-#     'V_P', 
-#     'V_N', 
-#     'F_P',
-#     'F_N' ,
-#     ])
-#     plt.xticks([i/20.0 for i in range(21)])
-#     plt.xticks(fontsize=8, rotation=90)
-#     plt.grid()
-#     plt.savefig(label+"_raw_VPng_ng"+".png", dpi = 200)
-#     plt.clf()
+    plt.legend([
+    'V_P', 
+    'V_N', 
+    'F_P',
+    'F_N' ,
+    ])
+    plt.xticks([i/20.0 for i in range(21)])
+    plt.xticks(fontsize=8, rotation=90)
+    plt.grid()
+    plt.savefig(label+"_core_uniprot_mycobrowser"+".png", dpi = 200)
+    plt.clf()
 
 
+
+griffin_threshold_by_graphic=[0.85,0.85,0.65,0.8]
+griffin_threshold_by_graphic=[0.65]
+DeJesus_threshold_by_graphic=[0.8,0.75,0.525,0.675]
 # Calculo la mtriz de confusion para el threshold seleccionado y veo quienes son los FP
 for index in range(len(griffin_files)):
-    confusion(loerger_files[index], griffin_pvalue, esse_threshold=0.1, growth_threshold=DeJesus_threshold_by_graphic[index]*0.0485)
+    confusion(loerger_files[index], griffin_pvalue, esse_threshold=0.1, growth_threshold=griffin_threshold_by_graphic[index]*0.0584)
